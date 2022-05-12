@@ -1,0 +1,66 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bulk Edit Metafields URL Builder</title>
+	</head>
+	<body>
+		<h1>Shopify Bulk Edit Metafields URL Builder</h1>
+		<form id="builderForm">
+			<input type="text" placeholder="Store url" id="storeUrl"/>.myshopify.com
+			<br/>
+			<ol id="formList">
+				<li>
+                    <input type="text" placeholder="Namespace" />
+					<input type="text" placeholder="Key" />
+				</li>
+			</ol>
+			<button onClick="addMetafield()" type="button">+ Add Metafield</button>
+            <input type="submit" value="Submit">
+		</form>
+		<a href="#" id="urlResult" target="_blank"></a>
+
+        <script>
+            const form = document.querySelector('#builderForm')
+            const formList = document.querySelector('#formList')
+            const addMetafield = () => {
+                const li = document.createElement('li')
+                const nsInput = document.createElement('input')
+                nsInput.setAttribute('placeholder','Namespace')
+                nsInput.setAttribute('type','text')
+                const keyInput = document.createElement('input')
+                keyInput.setAttribute('placeholder','Key')
+                keyInput.setAttribute('type','text')
+
+                li.appendChild(nsInput)
+                li.appendChild(keyInput)
+
+                formList.appendChild(li)
+            }
+            const buildUrl = () => {
+                let url = `https://${document.querySelector('#storeUrl').value}.myshopify.com/admin/bulk?resource_name=Product&edit=`
+                let items = formList.querySelectorAll('li');
+                let link = document.querySelector('#urlResult')
+
+                items.forEach((item, idx) => {
+                    let namespace = item.querySelector('input[placeholder=Namespace]').value
+                    let key = item.querySelector('input[placeholder=Key]').value
+                    if (idx === items.length - 1) {
+                        url = url + `metafields.${namespace}.${key}`;
+                    } else {
+                        url = url + `metafields.${namespace}.${key}%3Astring%2C`;
+                    }
+                })
+                
+                link.setAttribute('href',url)
+                link.innerHTML = url
+            }
+
+            form.addEventListener('submit',function(e) {
+                e.preventDefault();
+                buildUrl();
+            })
+        </script>
+	</body>
+</html>

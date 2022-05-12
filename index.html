@@ -4,20 +4,94 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Bulk Edit Metafields URL Builder</title>
+        <style>
+            body {
+                align-items: center;
+                background-color: #f5f5f5;
+                display: flex;
+                flex-direction: column;
+                font-family: monospace;
+                font-size: 18px;
+                justify-content: center;
+                letter-spacing: .1em;
+                min-height: 100vh;
+            }
+            h1 {
+                text-align: center;
+            }
+            #builderForm {
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0 12px 24px rgba(0,0,0,.15);
+                max-width: 500px;
+                padding: 2rem;
+            }
+            #formList {
+                padding: 0;
+            }
+            #formList li {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            #builderForm input:not([type="submit"]) {
+                border-radius: 3px;
+                border: 1px solid #d9d9d9;
+                min-height: 40px;
+                text-indent: 6px;
+                width: 48%;
+            }
+            #builderForm #storeUrl {
+                border-width: 0 0 1px 0;
+                width: auto;
+            }
+            .add-values button, .submit-form input[type="submit"] {
+                cursor: pointer;
+            }
+            .add-values button {
+                background-color: white;
+                display: block;
+                padding: 0.5rem 2rem;
+                width: 100%;
+            }
+            .submit-form {
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                padding: 2rem 0;
+            }
+            .submit-form input[type="submit"] {
+                background-color: #262626;
+                border: none;
+                color: white;
+                padding: .5rem 2rem;
+            }
+            #urlResult {
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0 12px 24px rgba(0,0,0,.15);
+                padding: 2rem;
+                display: none;
+            }
+        </style>
 	</head>
 	<body>
 		<h1>Shopify Bulk Edit Metafields URL Builder</h1>
 		<form id="builderForm">
-			<input type="text" placeholder="Store url" id="storeUrl"/>.myshopify.com
+			<input type="text" placeholder="Store url" id="storeUrl" required/>.myshopify.com
 			<br/>
 			<ol id="formList">
 				<li>
-                    <input type="text" placeholder="Namespace" />
-					<input type="text" placeholder="Key" />
+                    <input type="text" placeholder="Namespace" required/>
+					<input type="text" placeholder="Key" required/>
 				</li>
 			</ol>
-			<button onClick="addMetafield()" type="button">+ Add Metafield</button>
-            <input type="submit" value="Submit">
+            <div class="add-values">
+                <button onClick="addMetafield()" type="button">+ Add Metafield</button>
+            </div>
+			<div class="submit-form">
+                <input type="submit" value="Submit">
+            </div>
 		</form>
 		<a href="#" id="urlResult" target="_blank"></a>
 
@@ -55,6 +129,7 @@
                 
                 link.setAttribute('href',url)
                 link.innerHTML = url
+                link.style.display = "block"
             }
 
             form.addEventListener('submit',function(e) {
